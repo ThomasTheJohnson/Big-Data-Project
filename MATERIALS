@@ -13,4 +13,19 @@ Required Materials:
 	? Weather vane
 	? Rain guage
 	? Camera Module
+-------------------------------------------------------------------------------
+03/06/2017
+
+	After some further research, we decided on a different approach to this
+ weather station idea using Raspberry Pi Sense Hats. These are devices that are
+currently in use on the international space station.
+
+Materials Being Used:
+	2 Raspberry Pi
+		- Required cables
+		- Electroinc working items.
+		? Camera modules
+	2 Raspberry Pi Sense Hats
+	2 Raspberry Pi 'Zebra' Cases
+	
 	
