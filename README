@@ -1,11 +1,27 @@
+### Weather Station with a Raspberry Pi ###
 
-This respository is for any files pertaining to our final project for CSC 4740
+Contributors: Thomas Johnson
+	      James  Singleton
 
--------------------------------------------------------------------------------
-02/28/2017
-Project Topic: ???
--------------------------------------------------------------------------------
-03/02/2017
-Project Topic: Weather Station with a Raspberry Pi
-Goal: To remotely collect weather data.
--------------------------------------------------------------------------------
+	  ______
+   ______/	\____
+ _/		     \__
+/			\
+\		 	/
+/			/
+\__    			/
+   \__/__/__\ \ \____/_/
+	    /   /
+	   /   \
+	  /   /\\
+	 //\  \ \\_
+	//  \ \  \
+     __//\   \\
+      //     //
+ _   //  ____   _    _
+| |     | ___| | |  | |
+| |     | |__  | |  | |
+| |     |__  | | |  | |
+| |___   __| | | |__| |
+|_____| |____| |______|
+	
