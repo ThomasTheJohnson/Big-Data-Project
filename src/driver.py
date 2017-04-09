@@ -39,6 +39,8 @@ lastTemp = 0
 ############### "Main" Execution ####################################
 while True:
 
+    display.off(sense)
+
     temperature1 = sense.get_temperature_from_humidity()
     temperature2 = sense.get_temperature_from_pressure()
     machineTemp = cpuTemp()
@@ -56,7 +58,7 @@ while True:
 
     loopCount = loopCount % 5
     if(loopCount == 0):
-
+	avgTemp = 0
         for nums in tempList:
             avgTemp += nums
         avgTemp = avgTemp/len(tempList)

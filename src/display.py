@@ -11,3 +11,7 @@ def displayClouds(senseName):
 
 def displaySun(senseName):
 	senseName.load_image('img/sun1.png')
+
+def off(senseName):
+	senseName.clear()
+
