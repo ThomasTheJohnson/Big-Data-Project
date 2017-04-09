@@ -30,6 +30,7 @@ sense.set_rotation(180)
 
 
 ################ Variables ########################################
+tempList = [50,50,50,50,50]
 riseOrDrop = 0
 loopCount = 0
 lastTemp = 0
@@ -42,14 +43,27 @@ while True:
     temperature2 = sense.get_temperature_from_pressure()
     machineTemp = cpuTemp()
 
-    avgTemp = (temperature1+temperature2)/2
-    accountForCPU = avgTemp - ((machineTemp - avgTemp)/1.5)
-    avgTemp = c_to_f(accountForCPU)
+    temp = (temperature1+temperature2)/2
+    accountForCPU = temp - ((machineTemp - temp)/1.5)
+    temp = c_to_f(accountForCPU)
 
-    riseOrDrop = lastTemp - avgTemp
-    lastTemp = avgTemp
-    loopCount = loopCount % 10
+    tempList.append(temp)
+    tempList.pop(0)
+
+
+    #riseOrDrop = lastTemp - avgTemp
+    #lastTemp = avgTemp
+
+    loopCount = loopCount % 5
     if(loopCount == 0):
+
+        for nums in tempList:
+            avgTemp += nums
+        avgTemp = avgTemp/len(tempList)
+
+        riseOrDrop = lastTemp - avgTemp
+        lastTemp = avgTemp
+        
         if(riseOrDrop > 0):
             display.displayDrop(sense)
         else:
@@ -62,6 +76,6 @@ while True:
 
     #sqlCommands.write(db, datetime.datetime.now(), avgTemp, humidity, pressure)
     print datetime.datetime.now()
-    print 'Temperature = %.1f Pressure = %.1f Humidity = %.1f' % (avgTemp, pressure, humidity)
+    print 'Temperature = %.1f Pressure = %.1f Humidity = %.1f' % (temp, pressure, humidity)
     loopCount += 1
     time.sleep(5)
