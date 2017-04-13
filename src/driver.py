@@ -2,9 +2,8 @@ from sense_hat import SenseHat
 import display
 import time
 import os
-#import pymysql.cursors
-#import sqlCommands
 import datetime
+import requests
 
 ################## Functions #######################################
 
@@ -16,14 +15,6 @@ def cpuTemp():
     temp = float(reading.replace("temp=","").replace("'C\n",""))
     return(temp)
 
-################# Database Connection ##############################
-#db = pymysql.connect(host="server IP address goes here",
-                    # user="username goes here",
-                    # password="password goes here",
-                    # db="database name goes here",
-                    # charset='utf8mb4',
-                    # cursorclass=pymysql.cursors.DictCursor)
-
 ################# SenseHat Objects ################################
 sense = SenseHat()
 sense.set_rotation(180)
@@ -34,7 +25,8 @@ tempList = [50,50,50,50,50]
 riseOrDrop = 0
 loopCount = 0
 lastTemp = 0
-
+url = 'http://52.33.110.204/node/weather/api/stationdata'
+stationid = 1
 
 ############### "Main" Execution ####################################
 while True:
@@ -47,17 +39,14 @@ while True:
 
     temp = (temperature1+temperature2)/2
     accountForCPU = temp - ((machineTemp - temp)/1.5)
-    temp = c_to_f(accountForCPU)
-
+    temp = c_to_f(accountForCPU) 
+   
     tempList.append(temp)
     tempList.pop(0)
 
-
-    #riseOrDrop = lastTemp - avgTemp
-    #lastTemp = avgTemp
-
     loopCount = loopCount % 5
-    if(loopCount == 0):
+    
+    if(loopCount == 0):	
 	avgTemp = 0
         for nums in tempList:
             avgTemp += nums
@@ -65,7 +54,7 @@ while True:
 
         riseOrDrop = lastTemp - avgTemp
         lastTemp = avgTemp
-        
+
         if(riseOrDrop > 0):
             display.displayDrop(sense)
         else:
@@ -75,9 +64,24 @@ while True:
     pressure = sense.get_pressure()
     humidity = sense.get_humidity()
 
+    payload = {
+        'station_id': stationid,
+        'temperature': temp,
+        'humidity': humidity,
+        'pressure': pressure
+        #'latitude': None,
+        #'longitude': None
+    }
 
-    #sqlCommands.write(db, datetime.datetime.now(), avgTemp, humidity, pressure)
-    print datetime.datetime.now()
-    print 'Temperature = %.1f Pressure = %.1f Humidity = %.1f' % (temp, pressure, humidity)
+    r = requests.post(url, data=payload)
+    print(r.text)
+    #print datetime.datetime.now()
+    #print 'Temperature = %.1f Pressure = %.1f Humidity = %.1f' % (finalTemp, pressure, humidity)
     loopCount += 1
-    time.sleep(5)
+    time.sleep(30)
+
+
+    #OpenWeatherAPI Use get to store data that we do not have access to.
+    #Add more display
+    #Clean up everything else.
+    #Execute on startup
