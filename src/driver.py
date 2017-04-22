@@ -1,5 +1,4 @@
 from sense_hat import SenseHat
-import display
 import time
 import os
 import datetime
@@ -14,6 +13,17 @@ def cpuTemp():
     reading = os.popen("vcgencmd measure_temp").readline()
     temp = float(reading.replace("temp=","").replace("'C\n",""))
     return(temp)
+
+################# Display Functions ###############################
+
+def displayRise(senseName):
+	senseName.load_image('img/rise1.png')
+
+def displayDrop(senseName):
+	senseName.load_image('img/drop1.png')
+
+def off(senseName):
+	senseName.clear()
 
 ################# SenseHat Objects ################################
 sense = SenseHat()
@@ -31,7 +41,7 @@ stationid = 1
 ############### "Main" Execution ####################################
 while True:
 
-    display.off(sense)
+    off(sense)
 
     temperature1 = sense.get_temperature_from_humidity()
     temperature2 = sense.get_temperature_from_pressure()
@@ -56,9 +66,9 @@ while True:
         lastTemp = avgTemp
 
         if(riseOrDrop > 0):
-            display.displayDrop(sense)
+            displayDrop(sense)
         else:
-            display.displayRise(sense)
+            displayRise(sense)
 
 
     pressure = sense.get_pressure()
@@ -69,19 +79,12 @@ while True:
         'temperature': temp,
         'humidity': humidity,
         'pressure': pressure
-        #'latitude': None,
-        #'longitude': None
     }
 
     r = requests.post(url, data=payload)
-    print(r.text)
-    #print datetime.datetime.now()
-    #print 'Temperature = %.1f Pressure = %.1f Humidity = %.1f' % (finalTemp, pressure, humidity)
     loopCount += 1
-    time.sleep(30)
+    time.sleep(10)
 
 
     #OpenWeatherAPI Use get to store data that we do not have access to.
     #Add more display
-    #Clean up everything else.
-    #Execute on startup
