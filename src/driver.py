@@ -26,9 +26,11 @@ def off(senseName):
 	senseName.clear()
 
 ################# SenseHat Objects ################################
+
 sense = SenseHat()
 
 ################ Variables ########################################
+
 tempList = [50,50,50,50,50]
 riseOrDrop = 0
 loopCount = 0
@@ -37,6 +39,7 @@ url = 'http://52.33.110.204/node/weather/api/stationdata'
 stationid = 1
 
 ############### "Main" Execution ####################################
+
 while True:
 
     off(sense)
@@ -82,7 +85,3 @@ while True:
     r = requests.post(url, data=payload)
     loopCount += 1
     time.sleep(10)
-
-
-    #OpenWeatherAPI Use get to store data that we do not have access to.
-    #Add more display
