@@ -27,8 +27,6 @@ def off(senseName):
 
 ################# SenseHat Objects ################################
 sense = SenseHat()
-sense.set_rotation(180)
-
 
 ################ Variables ########################################
 tempList = [50,50,50,50,50]
