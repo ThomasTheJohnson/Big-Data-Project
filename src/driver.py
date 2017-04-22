@@ -50,15 +50,15 @@ while True:
 
     temp = (temperature1+temperature2)/2
     accountForCPU = temp - ((machineTemp - temp)/1.5)
-    temp = c_to_f(accountForCPU) 
-   
+    temp = c_to_f(accountForCPU)
+
     tempList.append(temp)
     tempList.pop(0)
 
     loopCount = loopCount % 5
-    
-    if(loopCount == 0):	
-	avgTemp = 0
+
+    if(loopCount == 0):
+	    avgTemp = 0
         for nums in tempList:
             avgTemp += nums
         avgTemp = avgTemp/len(tempList)
