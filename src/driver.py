@@ -22,6 +22,12 @@ def displayRise(senseName):
 def displayDrop(senseName):
 	senseName.load_image('img/drop1.png')
 
+def displayRain(senseName):
+    senseName.load_image('img/rain1.png')
+
+def displaySun(senseName):
+    senseName.load_image('img/sun1.png')
+
 def off(senseName):
 	senseName.clear()
 
@@ -31,10 +37,12 @@ sense = SenseHat()
 
 ################ Variables ########################################
 
-tempList = [50,50,50,50,50]
+tempList = [50,50,50,50,50,50,50,50,50,50]
+pressureList = [29.7,29.7]
 riseOrDrop = 0
 loopCount = 0
 lastTemp = 0
+lastPressure = 29.7
 url = 'http://52.33.110.204/node/weather/api/stationdata'
 stationid = 1 #This is the unique ID for my personal station.
 
@@ -62,8 +70,12 @@ while True:
     tempList.append(temp)
     tempList.pop(0)
 
+    pressure = sense.get_pressure()*.02953 #In Hg
+    pressureList.append(pressure)
+    pressureList.pop(0)
+
     ##Checks to see how many times the program has looped##
-    loopCount = loopCount % 5
+    loopCount = loopCount % 10
 
     ##If it is the fifth time the program has looped then we enter##
     if(loopCount == 0):
@@ -73,7 +85,7 @@ while True:
             avgTemp += nums
         avgTemp = avgTemp/len(tempList)
 
-        ##Subtracts the current average of the 5 reads with the previous##
+        ##Subtracts the current average of the 10 reads with the previous##
         riseOrDrop = lastTemp - avgTemp
         lastTemp = avgTemp
 
@@ -81,11 +93,23 @@ while True:
         ##the LED matrix displays a drop in temperature or vice versa##
         if(riseOrDrop > 0):
             displayDrop(sense)
+            time.sleep(5)
         else:
             displayRise(sense)
+            time.sleep(5)
 
-    ##Reads the pressure and humidity sensors##
-    pressure = sense.get_pressure()*.02953 #In Hg
+        pressureSlope = round((29.7 - pressureList[1]),1)
+
+        if(pressureSlope > 0):
+            displayRain(sense)
+            time.sleep(5)
+        else:
+            displaySun(sense)
+            time.sleep(5)
+	        off(sense)
+
+
+    ##Reads the humidity sensor##
     humidity = sense.get_humidity() #In %rH
 
     ##Creates a HTTP Post payload with data##
@@ -100,4 +124,4 @@ while True:
     r = requests.post(url, data=payload)
     loopCount += 1
     ##Waits 10 seconds before reading again##
-    time.sleep(10)
+    time.sleep(30)
