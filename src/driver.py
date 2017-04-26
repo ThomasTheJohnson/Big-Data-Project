@@ -106,9 +106,8 @@ while True:
         else:
             displaySun(sense)
             time.sleep(5)
-	        off(sense)
 
-
+    off(sense) 
     ##Reads the humidity sensor##
     humidity = sense.get_humidity() #In %rH
 
